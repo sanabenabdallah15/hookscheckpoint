@@ -1,16 +1,25 @@
-
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import ReactStars from 'react-stars'
+import Movie from './Movie';
+import { Link } from 'react-router-dom';
+
+
 function MovieCard({el}) {
-    const {Title,Description,Poster,Rating}=el
+    const {id,Title,Description,Poster,Rating}=el
     return (
       <Card style={{ width: '18rem' }}>
         <Card.Img variant="top" src={Poster} />
         <Card.Body>
+        <Link to={`/MoviePage/${id}`} >
           <Card.Title style={{fontSize:35}}>{Title}</Card.Title>
+          </Link>
           <Card.Text style={{fontSize:25}}>
+         
+                      {Movie.Title}
+                   
            {Description}
+           
          
           </Card.Text>
         

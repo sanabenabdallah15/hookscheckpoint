@@ -30,8 +30,9 @@ function Filter({ onFilterChange,onFilterRate }) {
     count={5}
     onChange={ratingChanged}
     size={35}
-    color1={'#ffff'}
+    
     color2={'#ffd700'} />
+
   
   </>
   );

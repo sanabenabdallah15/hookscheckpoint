@@ -1,19 +1,36 @@
 import React, { useState } from 'react';
-const AddMovieForm = ({ onAddMovie,buttonLabel ,closeModal}) => {
-    const [Title, setTitle] = useState('');
+import Modal from 'react-modal';
+import { useNavigate } from "react-router-dom";
+const AddMovieForm = ({ onAddMovie}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [Title, setTitle] = useState('');
     const [Rating, setRating] = useState('');
     const [Description, setDescription] = useState('');
-    const [Poster,setPoster]=useState('')
-  
-    const handleSubmit = (e) => {
+    const [Poster,setPoster]=useState('');
+    const [id,setid]=useState('');
+    const[videoLink,setvideoLink]=useState('')
+
+    const navigate = useNavigate();
+   
+
+    const handleClick = () => {
+      setIsModalOpen(!isModalOpen)
+  }
+
+
+    const handleSubmitt = (e) => {
       e.preventDefault();
-  
+ 
+    
       // Create a movie object with the input data
       const newMovie = {
         Title,
         Rating,
         Description,
-        Poster
+        Poster,
+        id,
+        videoLink
       };
 
   
@@ -25,15 +42,26 @@ const AddMovieForm = ({ onAddMovie,buttonLabel ,closeModal}) => {
       setRating('');
       setDescription('');
       setPoster('');
-      setTimeout(() => {
-        closeModal();
-      }, 0);
+      setid(' ');
+      setvideoLink(' ');
+      handleClick()
+
+      navigate("/");
+      console.log("saanaaaaaaa")
     };
     
    
     return (
+      <>
+      <button className='button' onClick= {()=>handleClick()} >Add Movie</button>
+      
+      <Modal
+      isOpen={isModalOpen}
+    
+       
+      >
     <div className='center'>
-      <form onSubmit={handleSubmit}>
+      <form >
    
         <label >
           <h1>Title:</h1>
@@ -55,10 +83,23 @@ const AddMovieForm = ({ onAddMovie,buttonLabel ,closeModal}) => {
         <input type='src' value={Poster} onChange={(e) => setPoster(e.target.value)}  className='input'/>
         </label>
         <br />
-        <button className='button2' type='submit'  >Add A Movie</button>
-       
+        <label>
+         <h1>videoLink:</h1>
+        <input type='src' value={videoLink} onChange={(e) => setvideoLink(e.target.value)}  className='input'/>
+        </label>
+        <br />
+        <label>
+         <h1>id:</h1>
+        <input type='src' value={id} onChange={(e) => setid(e.target.value)}  className='input'/>
+        </label>
+        <br />
+ 
       </form>
+      <button  className='button2' onClick={(e)=>handleSubmitt(e)} >Add A Movie</button>
+       
       </div>
+      </Modal>
+      </>
     );
   };
   

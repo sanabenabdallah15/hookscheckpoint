@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal';
+
 import './App.css';
 import MovieList from './MovieList';
 import Filter from './Filter';
 import Movie from './Movie';
 import AddMovieForm from "./Addmovie";
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import MoviePage from './MoviePage';
 
-Modal.setAppElement('#root');
+
+
+
 function App() {
   const [movies, setMovies] = useState(Movie);
   const [filterText, setFilterText] = useState('');
   const [filterRating,setFilterRating]=useState('')
   const [filteredMovies, setFilteredMovies] = useState(movies);
   const [showFilteredMovies, setShowFilteredMovies] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(movies,"movie")
+
   const handleAddMovie = (newMovie) => {
     setMovies([...movies, newMovie]);
 }
@@ -36,11 +39,12 @@ function App() {
     setFilteredMovies(filteredItems);
     setShowFilteredMovies(true);
   }
- const handleClick = () => {
-      setIsModalOpen(!isModalOpen)
-  }
+
+
   return (
+    <Router>
     <>
+    
     <div className="App">
      
       <div className='filter'>
@@ -52,31 +56,44 @@ function App() {
       </div>
       {showFilteredMovies ? (
         <ul>
-          {filteredMovies.map((movie, index) => (
-            <li key={index}>
-              <h2>{movie.Title}</h2>
-              <p>{movie.Description}</p>
-              <img src={movie.Poster} alt={movie.Title} />
-              <p>Rating: {movie.Rating}</p>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-  
-      <MovieList movies={movies}/>
-   
-      <button className='button' onClick= {handleClick} >Add Movie</button>
+        {filteredMovies.map((movie, index) => (
+          <li key={index}>
+            <h2>
+          
+                {movie.Title}
+               
+            </h2>
+            <p>{movie.Description}</p>
+            <img src={movie.Poster} alt={movie.Title} />
+            <p>Rating: {movie.Rating}</p>
+            <button  className="button4" onClick={() => window.open(movie.videoLink, '_blank')}>
+                     Watch Trailer
+            </button>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <Routes>
+      <Route path="/" element={<MovieList movies={movies}/>} />
+      </Routes>
+      )}
+      <Routes>
+          <Route path="/" element={ <AddMovieForm   onAddMovie={handleAddMovie}   />} />
 
-      <Modal
-      isOpen={isModalOpen}
-      onRequestClose={handleClick}
-       contentLabel="Add Movie Modal"
-      >
-      <AddMovieForm  closeModal={handleClick} onAddMovie={handleAddMovie}   />
-    </Modal>
+    </Routes>
+   
+    
+    
+    <Routes>
+
+            <Route path="/MoviePage/:idfilm" element={<MoviePage movies={movies}/>} />
+     </Routes>     
+
+   
   
     </div>
     </>
+    </Router>
   );
 }
 
